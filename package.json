@@ -1,0 +1,23 @@
+{
+  "name": "votingsystem",
+  "version": "1.0.0",
+  "description": "The Keansian electorate system.",
+  "main": "app.js",
+  "dependencies": {
+    "switchchat": "^1.4.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Keanu73/VotingSystem.git"
+  },
+  "author": "Keanu73",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Keanu73/VotingSystem/issues"
+  },
+  "homepage": "https://github.com/Keanu73/VotingSystem#readme"
+}
