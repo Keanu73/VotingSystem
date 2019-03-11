@@ -26,8 +26,19 @@ client.label = "Keansia Voting Systems"
 
 // Connect to endpoint (returns promise)
 client.connect()
-  .then(() => {
+  .then(async () => {
     console.log("Connected! Licence owner: " + client.owner)
+    const cmdFiles = await readdir("./commands/")
+    cmdFiles.forEach(async f => {
+      console.log(f)
+      if (!f.endsWith(".js")) return
+      try {
+        const module = require(`./commands/${f}`)
+        client.commands.set(module.conf.name, module)
+      } catch (e) {
+        console.error(e)
+      }
+    })
   })
   .catch(e => {
     console.error(e)
@@ -35,14 +46,12 @@ client.connect()
 
 // Listen to events
 client.on("command", async function(cmd) {
-  const citizen = await readfile("./citizens.json").then(data => data.indexOf(cmd.player.name) >= 0)
+  const command = client.commands.get(cmd.command)
+  if (!command) return
+  const citizen = await readfile("./citizens.json").then(data => data.indexOf(cmd.player.name) >= 0).catch(err => (console.error(err)))
+  console.log(citizen)
   const level = citizen ? "Citizen" : "Regular"
-  const cmdFiles = await readdir("./commands/")
-  cmdFiles.forEach(f => {
-    if (!f.endsWith(".js") || !f === cmd) cmd.reply("The command you ran **does not exist.**", client.label)
-    if (!f.conf.permLevel === level) cmd.reply("You cannot *run* this command.", client.label)
-    const response = f.run(client, cmd, cmd.args)
-    if (response) console.log(response)
-  })
-  //console.log(`${message.player}: ${message}`)
+  console.log(level)
+  if (!command.conf.permLevel === level) cmd.reply("You cannot *run* this command.", client.label)
+  command.run(client, cmd, cmd.args)
 })
