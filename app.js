@@ -44,7 +44,7 @@ client.connect()
       }
     })
     var announcement = setInterval(function() {
-      if (!(Date.now >= 1552435200000)) return
+      if (!(Date.now === 1552435200000 || Date.now === 1552435201000)) return
       client.players.forEach(function(_uuid, plr, _map) {
         const citizen = readfile("./files/citizens.json").then(data => data.indexOf(plr) >= 0).catch(err => (console.error(err)))
         if (!citizen) return
