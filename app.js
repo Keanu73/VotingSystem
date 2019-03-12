@@ -7,11 +7,14 @@ const Enmap = require("enmap")
 const SwitchChat = require("switchchat")
 const client = new SwitchChat.Client("5686f924-40c1-469d-bc49-1c2230949233")
 
+// Define president that can be changed
+client.president = "Keanu73"
+
 client.commands = new Enmap()
 
-client.citizens = require("./citizens.json")
+client.citizens = require("./files/citizens.json")
 
-client.candidates = require("./candidates.json")
+client.candidates = require("./files/candidates.json")
 
 client.votes = new Enmap({ 
   name: "votes",
@@ -48,7 +51,7 @@ client.connect()
 client.on("command", async function(cmd) {
   const command = client.commands.get(cmd.command)
   if (!command) return
-  const citizen = await readfile("./citizens.json").then(data => data.indexOf(cmd.player.name) >= 0).catch(err => (console.error(err)))
+  const citizen = await readfile("./files/citizens.json").then(data => data.indexOf(cmd.player.name) >= 0).catch(err => (console.error(err)))
   console.log(citizen)
   const level = citizen ? "Citizen" : "Regular"
   console.log(level)

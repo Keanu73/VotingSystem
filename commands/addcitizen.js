@@ -3,15 +3,15 @@ const readfile = promisify(require("fs").readFile)
 const writefile = promisify(require("fs").writeFile)
 
 exports.run = async (client, cmd, args) => {
-    const file = JSON.parse("./citizens.json")
-    console.log(JSON.parse("./citizens.json"))
+  if (cmd.player.name === client.president) {
     const citizen = args[0]
-    file.push(citizen)
-    await writefile("./citizens.json", JSON.stringify(file, null, 4), 'utf8').then(data => {
-        if (!data) return
-        cmd.reply("§aThe command has run successfully.", client.label, "format")
+    const response = client.citizens.push(citizen)
+    const final = JSON.stringify(client.citizens, null, 4)
+    writefile("./files/citizens.json", final).then(() => {
+      cmd.reply("§aThe command has run successfully.", client.label, "format")
     })
     .catch(err => console.error(err))
+  }
 }
 
 exports.conf = {
