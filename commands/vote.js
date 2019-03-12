@@ -2,6 +2,7 @@ const { promisify } = require("util")
 const readfile = promisify(require("fs").readFile)
 
 exports.run = async (client, cmd, args) => {
+  if (!(Date.now >= 1552435200000)) return cmd.reply("§4It is not midnight in UTC yet.", client.label)
   const plr = cmd.player.name
   const vote = args[0]
 
@@ -27,5 +28,5 @@ exports.run = async (client, cmd, args) => {
 
 exports.conf = {
   name: "vote",
-  permLevel: "Citizen"
+  permLevel: "1"
 }

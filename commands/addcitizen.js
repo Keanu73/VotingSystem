@@ -16,5 +16,5 @@ exports.run = async (client, cmd, args) => {
 
 exports.conf = {
   name: "addcitizen",
-  permLevel: "Citizen"
+  permLevel: "1"
 }

@@ -31,7 +31,7 @@ client.label = "Keansia Voting Systems"
 // Connect to endpoint (returns promise)
 client.connect()
   .then(async () => {
-    console.log("Connected! Licence owner: " + client.owner)
+    if (!client.owner === "Keanu73") throw "You cannot run the electorate system under another license."
     const cmdFiles = await readdir("./commands/")
     cmdFiles.forEach(async f => {
       console.log(f)
@@ -43,20 +43,28 @@ client.connect()
         console.error(e)
       }
     })
+    var announcement = setInterval(function() {
+      if (!(Date.now >= 1552435200000)) return
+      client.players.forEach(function(_uuid, plr, _map) {
+        const citizen = readfile("./files/citizens.json").then(data => data.indexOf(plr) >= 0).catch(err => (console.error(err)))
+        if (!citizen) return
+        client.tell(plr, "\n§6§l§nA Special Announcement§r\nCitizens, today is §lMarch the 13th, 00:00UTC.§r\nIt is the Keansian Election Day. \nThe running candidates are §a§lKeanu73§r and §a§lgollark.§r\nYou may only vote once, so consider your vote wisely.\nCommands: \\vote, \\candidates, \\info", client.label, "format")
+      })
+      clearInterval(announcement)
+    }, 500)
   })
   .catch(e => {
     console.error(e)
   })
 
-client.tell("Keanu73", "")
 // Listen to events
 client.on("command", async function(cmd) {
   const command = client.commands.get(cmd.command)
   if (!command) return
   const citizen = await readfile("./files/citizens.json").then(data => data.indexOf(cmd.player.name) >= 0).catch(err => (console.error(err)))
   console.log(citizen)
-  const level = citizen ? "Citizen" : "Regular"
+  const level = citizen ? 1 : 0
   console.log(level)
-  if (!command.conf.permLevel === level) cmd.reply("You cannot *run* this command.", client.label)
+  if (command.conf.permLevel > level) return cmd.reply("You cannot *run* this command.", client.label)
   command.run(client, cmd, cmd.args)
 })

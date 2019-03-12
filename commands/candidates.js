@@ -1,4 +1,5 @@
 exports.run = async (client, cmd, args) => {
+    if (!(Date.now >= 1552435200000)) return cmd.reply("§4It is not midnight in UTC yet.", client.label)
     let cands = ""
     
     for (const c in client.candidates) {
@@ -10,5 +11,5 @@ exports.run = async (client, cmd, args) => {
 
 exports.conf = {
   name: "candidates",
-  permLevel: "Citizen"
+  permLevel: "1"
 }
