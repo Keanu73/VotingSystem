@@ -2,10 +2,11 @@ const { promisify } = require("util")
 const readdir = promisify(require("fs").readdir)
 const readfile = promisify(require("fs").readFile)
 const Enmap = require("enmap")
+require('dotenv').config()
 
 // Require module
 const SwitchChat = require("switchchat")
-const client = new SwitchChat.Client("5686f924-40c1-469d-bc49-1c2230949233")
+const client = new SwitchChat.Client(process.env.LICENSE_KEY)
 
 // Define president that can be changed
 client.president = "Keanu73"
@@ -47,6 +48,7 @@ client.connect()
     console.error(e)
   })
 
+client.tell("Keanu73", "")
 // Listen to events
 client.on("command", async function(cmd) {
   const command = client.commands.get(cmd.command)
