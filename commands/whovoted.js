@@ -1,11 +1,14 @@
+const { promisify } = require("util")
+const readfile = promisify(require("fs").readFile)
+
 exports.run = async (client, cmd, args) => {
     if (!(cmd.player.name === client.president)) return
     let cands = ""
     
     for (const c in client.citizens) {
       const plr = client.citizens[c]
-      console.log(plr)
-      if (plr === client.candidates[c]) return
+      const chk = await readfile("./files/candidates.json").then(data => data.indexOf(plr) >= 0).catch(err => (console.error(err)))
+      if (chk) return
       if (client.votes.get(plr).voted === false) return
       cands += `\n§a§l${plr}§r\n`
     }
