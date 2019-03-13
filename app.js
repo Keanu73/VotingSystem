@@ -45,19 +45,7 @@ client.connect()
     })
     client.logger.log("Keansian Voting System has loaded.")
 
-    client.logger.log("Announcement being broadcasted.")
-    client.players.forEach(function(plr) {
-      plr = plr.name
-      const citizen = readfile("./files/citizens.json").then(data => data.indexOf(plr) >= 0).catch(err => (console.error(err)))
-      const candidate = readfile("./files/candidates.json").then(data => data.indexOf(plr) >= 0).catch(err => (console.error(err)))
-      const check = client.votes.ensure(plr, {
-        voted: false
-      })
-    
-      if (!citizen || check && client.votes.get(plr).voted || candidate) return
-      client.tell(plr, "\n§6§l§nA Special Announcement§r\nCitizens, today is §lMarch the 13th.§r\nIt is the Keansian Election Day. \nThe running candidates are §a§lKeanu73§r and §a§lgollark.§r\nYou may only vote once, so consider your vote wisely.\nCommands: \\vote, \\candidates, \\info", client.label, "format")
-    })
-    var announcement = setInterval(function() {
+    const announce = function() {
       client.logger.log("Announcement being broadcasted.")
       client.players.forEach(function(plr) {
         plr = plr.name
@@ -68,10 +56,12 @@ client.connect()
         })
       
         if (!citizen || check && client.votes.get(plr).voted || candidate) return
-        client.tell(plr, "\n§6§l§nA Special Announcement§r\nCitizens, today is §lMarch the 13th.§r\nIt is the Keansian Election Day. \nThe running candidates are §a§lKeanu73§r and §a§lgollark.§r\nYou may only vote once, so consider your vote wisely.\nCommands: \\vote, \\candidates, \\info", client.label, "format")
+        client.tell(plr, "\n§6§l§nA Special Announcement§r\nCitizens, today is §lMarch the 13th.§r\nIt is the Keansian Election Day. \nThe running candidates are §a§lKeanu73§r and §a§lgollark.§r\nYou may only vote once, so consider your vote wisely.\nVoting will end at midnight UTC.\nCommands: \\vote, \\candidates, \\info", client.label, "format")
       })
-      if (Date.now === 1552557600000) clearInterval(announcement)
-    }, 7200000)
+      if (Date.now >= 1552557600000) clearInterval(announcement)
+    }
+    announce()
+    var announcement = setInterval(announce, 7200000)
   })
   .catch(e => {
     client.logger.error(e)

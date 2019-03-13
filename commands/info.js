@@ -1,5 +1,5 @@
 exports.run = async (client, cmd, args) => {
-  const res = await cmd.reply(`https://pastebin.com/d5dmbnXw`, client.label, "format")
+  const res = await cmd.reply(`[More Information](https://pastebin.com/d5dmbnXw)`, client.label)
   console.log(res)
 }
 
