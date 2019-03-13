@@ -5,7 +5,7 @@ exports.run = async (client, cmd, args) => {
     for (const c in client.citizens) {
       const plr = client.citizens[c]
       console.log(plr)
-      if (client.votes.get(plr).voted === false) return
+      if (client.votes.get(plr).voted === false && !plr === client.candidates.find(plr)) return
       cands += `\n§a§l${plr}§r\n`
     }
     
