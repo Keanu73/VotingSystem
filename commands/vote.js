@@ -12,7 +12,7 @@ exports.run = async (client, cmd, args) => {
 
   if (check && client.votes.get(plr).voted) return cmd.reply("§4You have already voted in the Elections.", client.label, "format")
 
-  const candidate = await readfile("./files/candidates.json").then(data => data.indexOf(vote) >= 0).catch(err => (console.error(err)))
+  const candidate = await readfile("./files/candidates.json").then(data => data.indexOf(String(vote)) >= 0).catch(err => (console.error(err)))
   if (!candidate) return cmd.reply("§4The candidate you specified does not exist.", client.label, "format")
 
   const chk = await readfile("./files/candidates.json").then(data => data.indexOf(plr) >= 0).catch(err => (console.error(err)))
