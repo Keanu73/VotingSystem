@@ -24,8 +24,6 @@ client.votes = new Enmap({
   persistent: true
 })
 
-client.logger = require("./functions/Logger")
-
 client.label = "Keansia Voting Systems"
 
 // Connect to endpoint (returns promise)
@@ -70,7 +68,7 @@ client.connect()
 client.on("command", async function(cmd) {
   const command = client.commands.get(cmd.command)
   if (!command) return
-  const citizen = await readfile("./files/citizens.json").then(data => data.indexOf(cmd.player.name) >= 0).catch(err => (client.logger.error(err)))
+  const citizen = await readfile("./files/citizens.json").then(data => data.indexOf(cmd.player.name) >= 0).catch(err => (console.error(err)))
   console.log(citizen)
   const level = citizen ? 1 : 0
   console.log(level)
