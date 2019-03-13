@@ -2,7 +2,7 @@ const { promisify } = require("util")
 const readfile = promisify(require("fs").readFile)
 
 exports.run = async (client, cmd, args) => {
-  if (!(Date.now >= 1552435200000)) return cmd.reply("§4It is not midnight in UTC yet.", client.label)
+  if (Date.now >= 1552557600000) return cmd.reply("§4The elections have ended.", client.label)
   const plr = cmd.player.name
   const vote = args[0]
 
@@ -12,13 +12,13 @@ exports.run = async (client, cmd, args) => {
 
   if (check && client.votes.get(plr).voted) return cmd.reply("§4You have already voted in the Elections.", client.label, "format")
 
-  const candidate = await readfile("./files/candidates.json").then(data => data.indexOf(vote) >= 0).catch(err => (console.error(err)))
+  const candidate = await readfile("./files/candidates.json").then(data => data.indexOf(vote) >= 0).catch(err => (client.logger.error(err)))
   if (!candidate) return cmd.reply("§4The candidate you specified does not exist.", client.label, "format")
 
   const chk = await readfile("./files/candidates.json").then(data => data.indexOf(plr) >= 0).catch(err => (console.error(err)))
   if (chk) return cmd.reply("§4You cannot vote for yourself or anyone else!", client.label, "format")
 
-  client.votes.set(vote.toLowerCase(), client.votes.get(vote.toLowerCase()) + 1)
+  client.votes.set(vote, client.votes.get(vote) + 1)
   client.votes.set(plr, {
     voted: true
   })

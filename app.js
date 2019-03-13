@@ -34,34 +34,54 @@ client.connect()
     if (!client.owner === "Keanu73") throw "You cannot run the electorate system under another license."
     const cmdFiles = await readdir("./commands/")
     cmdFiles.forEach(async f => {
-      console.log(f)
+      client.logger.log(`Loading command: ${f}`)
       if (!f.endsWith(".js")) return
       try {
         const module = require(`./commands/${f}`)
         client.commands.set(module.conf.name, module)
       } catch (e) {
-        console.error(e)
+        client.logger.error(e)
       }
     })
-    var announcement = setInterval(function() {
-      if (!(Date.now === 1552435200000 || Date.now === 1552435201000)) return
-      client.players.forEach(function(_uuid, plr, _map) {
-        const citizen = readfile("./files/citizens.json").then(data => data.indexOf(plr) >= 0).catch(err => (console.error(err)))
-        if (!citizen) return
-        client.tell(plr, "\n§6§l§nA Special Announcement§r\nCitizens, today is §lMarch the 13th, 00:00UTC.§r\nIt is the Keansian Election Day. \nThe running candidates are §a§lKeanu73§r and §a§lgollark.§r\nYou may only vote once, so consider your vote wisely.\nCommands: \\vote, \\candidates, \\info", client.label, "format")
+    client.logger.log("Keansian Voting System has loaded.")
+
+    client.logger.log("Announcement being broadcasted.")
+    client.players.forEach(function(plr) {
+      plr = plr.name
+      const citizen = readfile("./files/citizens.json").then(data => data.indexOf(plr) >= 0).catch(err => (console.error(err)))
+      const candidate = readfile("./files/candidates.json").then(data => data.indexOf(plr) >= 0).catch(err => (console.error(err)))
+      const check = client.votes.ensure(plr, {
+        voted: false
       })
-      clearInterval(announcement)
-    }, 500)
+    
+      if (!citizen || check && client.votes.get(plr).voted || candidate) return
+      client.tell(plr, "\n§6§l§nA Special Announcement§r\nCitizens, today is §lMarch the 13th.§r\nIt is the Keansian Election Day. \nThe running candidates are §a§lKeanu73§r and §a§lgollark.§r\nYou may only vote once, so consider your vote wisely.\nCommands: \\vote, \\candidates, \\info", client.label, "format")
+    })
+    var announcement = setInterval(function() {
+      client.logger.log("Announcement being broadcasted.")
+      client.players.forEach(function(plr) {
+        plr = plr.name
+        const citizen = readfile("./files/citizens.json").then(data => data.indexOf(plr) >= 0).catch(err => (console.error(err)))
+        const candidate = readfile("./files/candidates.json").then(data => data.indexOf(plr) >= 0).catch(err => (console.error(err)))
+        const check = client.votes.ensure(plr, {
+          voted: false
+        })
+      
+        if (!citizen || check && client.votes.get(plr).voted || candidate) return
+        client.tell(plr, "\n§6§l§nA Special Announcement§r\nCitizens, today is §lMarch the 13th.§r\nIt is the Keansian Election Day. \nThe running candidates are §a§lKeanu73§r and §a§lgollark.§r\nYou may only vote once, so consider your vote wisely.\nCommands: \\vote, \\candidates, \\info", client.label, "format")
+      })
+      if (Date.now === 1552557600000) clearInterval(announcement)
+    }, 7200000)
   })
   .catch(e => {
-    console.error(e)
+    client.logger.error(e)
   })
 
 // Listen to events
 client.on("command", async function(cmd) {
   const command = client.commands.get(cmd.command)
   if (!command) return
-  const citizen = await readfile("./files/citizens.json").then(data => data.indexOf(cmd.player.name) >= 0).catch(err => (console.error(err)))
+  const citizen = await readfile("./files/citizens.json").then(data => data.indexOf(cmd.player.name) >= 0).catch(err => (client.logger.error(err)))
   console.log(citizen)
   const level = citizen ? 1 : 0
   console.log(level)

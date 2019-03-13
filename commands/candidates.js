@@ -1,5 +1,5 @@
 exports.run = async (client, cmd, args) => {
-    if (!(Date.now >= 1552435200000)) return cmd.reply("§4It is not midnight in UTC yet.", client.label)
+    if (Date.now >= 1552557600000) return cmd.reply("§4The elections have ended.", client.label)
     let cands = ""
     
     for (const c in client.candidates) {
