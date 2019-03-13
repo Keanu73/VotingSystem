@@ -1,5 +1,4 @@
 exports.run = async (client, cmd, args) => {
-    if (!(cmd.player.name === client.president)) return
     let cands = ""
     
     for (const c in client.candidates) {
