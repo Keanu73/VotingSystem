@@ -3,7 +3,7 @@ exports.run = async (client, cmd, args) => {
     let cands = ""
     
     for (const c in client.citizens) {
-      if (!client.votes.get(client.citizens[c]).voted) return
+      if (client.votes.get(client.citizens[c]).voted === false) return
       cands += `\n§a§l${client.citizens[c]}§r\n`
     }
     
