@@ -9,6 +9,7 @@ exports.run = async (client, cmd, args) => {
       const plr = client.citizens[c]
       console.log(plr)
       if (typeof client.votes.get(plr) === 'number') continue
+      if (!client.votes.get(plr)) continue
       if (client.votes.get(plr).voted === false) continue
       cands += `\n§a§l${plr}§r\n`
     }
