@@ -31,7 +31,6 @@ client.label = "Keansia Voting Systems"
 // Connect to endpoint (returns promise)
 client.connect()
   .then(async () => {
-    if (!client.owner === "Keanu73") throw "You cannot run the electorate system under another license."
     const cmdFiles = await readdir("./commands/")
     cmdFiles.forEach(async f => {
       client.logger.log(`Loading command: ${f}`)
