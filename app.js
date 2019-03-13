@@ -31,7 +31,7 @@ client.connect()
   .then(async () => {
     const cmdFiles = await readdir("./commands/")
     cmdFiles.forEach(async f => {
-      client.logger.log(`Loading command: ${f}`)
+      console.log(`Loading command: ${f}`)
       if (!f.endsWith(".js")) return
       try {
         const module = require(`./commands/${f}`)
@@ -40,10 +40,10 @@ client.connect()
         client.logger.error(e)
       }
     })
-    client.logger.log("Keansian Voting System has loaded.")
+    console.log("Keansian Voting System has loaded.")
 
     const announce = function() {
-      client.logger.log("Announcement being broadcasted.")
+      console.log("Announcement being broadcasted.")
       client.players.forEach(function(plr) {
         plr = plr.name
         const citizen = readfile("./files/citizens.json").then(data => data.indexOf(plr) >= 0).catch(err => (console.error(err)))
