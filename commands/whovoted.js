@@ -3,8 +3,10 @@ exports.run = async (client, cmd, args) => {
     let cands = ""
     
     for (const c in client.citizens) {
-      if (client.votes.get(client.citizens[c]).voted === false) return
-      cands += `\n§a§l${client.citizens[c]}§r\n`
+      const plr = client.citizens[c]
+      console.log(plr)
+      if (client.votes.get(plr).voted === false) return
+      cands += `\n§a§l${plr}§r\n`
     }
     
     await cmd.reply(`\n======== §6§l§nList of Citizens who Voted:§r ========\n${cands}\n==========================================\n`, client.label, "format")
