@@ -1,5 +1,5 @@
 exports.run = async (client, cmd, args) => {
-    if (!(cmd.player.name === client.president)) return
+  // I probably shouldn't have included an eval command, but it was useful for debugging.
     try {
         const code = args.join(" ")
         const result = eval(code)
@@ -12,5 +12,5 @@ exports.run = async (client, cmd, args) => {
   
   exports.conf = {
     name: "eval",
-    permLevel: "1"
+    permLevel: "2"
   }

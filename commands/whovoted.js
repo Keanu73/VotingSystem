@@ -2,13 +2,14 @@ const { promisify } = require("util")
 const readfile = promisify(require("fs").readFileSync)
 
 exports.run = async (client, cmd, args) => {
-    if (!(cmd.player.name === client.president)) return
     let cands = ""
-    
+    // For every citizen..
     for (const c in client.citizens) {
       const plr = client.citizens[c]
       console.log(plr)
+      // Is the value in the db a number (for a candidate's votes)? (Soon to be outlawed)
       if (typeof client.votes.get(plr) === 'number') continue
+      // Have they voted or are they present in the db?
       if (!client.votes.get(plr)) continue
       if (client.votes.get(plr).voted === false) continue
       cands += `\n§a§l${plr}§r\n`
@@ -19,5 +20,5 @@ exports.run = async (client, cmd, args) => {
   
   exports.conf = {
     name: "whovoted",
-    permLevel: "1"
+    permLevel: "2"
   }
