@@ -3,10 +3,13 @@ const readfile = promisify(require("fs").readFile)
 const writefile = promisify(require("fs").writeFile)
 
 exports.run = async (client, cmd, args) => {
-    if (!(cmd.player.name === client.president)) return
+    // Fetch citizen argument
     const citizen = args[0]
+    // Push it into json var for easiness
     const response = client.citizens.push(citizen)
+    // Stringify that in JSON and add some beautifying thingies
     const final = JSON.stringify(client.citizens, null, 4)
+    // Write it to the file. In the future, we will most likely use some sort of other system to store the citizens. I'm open to suggestions.
     writefile("./files/citizens.json", final).then(() => {
       cmd.reply("§aThe command has run successfully.", client.label, "format")
     })
@@ -15,5 +18,5 @@ exports.run = async (client, cmd, args) => {
 
 exports.conf = {
   name: "addcitizen",
-  permLevel: "1"
+  permLevel: "2"
 }
