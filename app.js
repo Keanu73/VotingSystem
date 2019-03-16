@@ -73,17 +73,23 @@ client.connect()
 
         for (const c in client.candidates) {
           // Grammatics.
-          if (c === client.candidates.length) cands += ` and §a§l${client.candidates[c - 1]}§r`
+          if (c === client.candidates.length) cands += ` and §a§l${client.candidates[c - 1]}§r.`
           cands += ` §a§l${client.candidates[c]}§r,`
         }
         // Tell the person the broadcastory message.
         client.tell(plr, `\n§6§l§nA Special Announcement§r\nCitizens, today is §l${moment(config.electionStart).format("MMMM t\\h\\e Do, HH:mm")}.§r\nIt is the Keansian Election Day. \nThe running candidates are${cands}\nYou may only vote once, so consider your vote wisely.\nVoting will end at midnight UTC.\nCommands: \\vote, \\candidates, \\info`, client.label, "format")
       })
       // Clear the interval if the election has ended. (will probably use setTimeout in future to calculate when exactly to start the interval)
+      // eslint-disable-next-line no-undef
       if (Date.now >= config.electionEnd) clearInterval(announcement)
     }
-    //announce()
-    var announcement = setInterval(announce, 7200000)
+
+    if (Date.now >= config.electionStart) {
+      announce()
+      if (!(Date.now.getHours() / 2) && Date.now.getMinutes()) {
+        const announcement = setInterval(announce, 7200000)
+      }
+    }
   })
   .catch(e => {
     console.error(e)
